@@ -2,15 +2,36 @@
 
 
 function setup() {
+  // creats canvas and main player
   cnv = new Canvas(windowWidth, windowHeight);
-  player = new Sprite(300, 200, 50, "d");  
+  player = new Sprite(300, 200, 50, "d");
   player.shapeColor = color("white");
 
 
 
   walls();
 
+  // player movement
+  document.addEventListener("keydown", function(event) {
+
+    if (event.code == 'ArrowUp') {
+      player.vel.y = -5;
+    }
+    else if (event.code == 'ArrowDown') {
+      player.vel.y = 5;
+    }
+    else if (event.code == 'ArrowLeft') {
+      player.vel.x = -5;
+    }
+    else if (event.code == "ArrowRight") {
+      player.vel.x = 5;
+    }
+  })
+
+// FINSH MOVEMENT
+
 }
+
 
 
 function walls() {
@@ -27,7 +48,6 @@ function walls() {
 }
 
 function draw() {
-
   background("black");
 
 
