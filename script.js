@@ -3,6 +3,8 @@
 
 function setup() {
   cnv = new Canvas(windowWidth, windowHeight);
+  player = new Sprite(300, 200, 50, "d");  
+  player.shapeColor = color("white");
 
 
 
