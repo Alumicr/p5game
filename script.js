@@ -7,8 +7,9 @@ function setup() {
   player = new Sprite(300, 200, 50, 50, "d");
   player.shapeColor = color("white");
   player.vel.x = 0;
+  player.vel.y = 0;
+  enemyBots = new Group();
   walls();
-   enemyBots = new Group(); 
   enemy();
 
   // player movement when key is pressed
@@ -16,7 +17,6 @@ function setup() {
     if (event.code == 'ArrowUp' || event.code == "KeyW") {
       player.vel.y = -5;
     }
-   
     else if (event.code == 'ArrowDown' || event.code == "KeyS") {
       player.vel.y = 5;
     }
@@ -27,7 +27,7 @@ function setup() {
       player.vel.x = 5;
     }
   })
-  
+
   // player movement reset when key is relased 
   document.addEventListener("keyup", function(event) {
 
@@ -53,22 +53,25 @@ function walls() {
 }
 
 
-function enemy(){
+function enemy() {
   // functiion creates the enemys 
-  for (i = 0; i < 50; i++){
-  enemy1 = new sprite( )
-  enemy1.vel.y = 1;
-  enemy1.vel.x = 1;
-    
-    
+  for (i = 0; i < 10; i++) {
+    enemy1 = new Sprite(100, 200, 50);
+    enemy1.vel.y = 1;
+    enemy1.vel.x = 1;
+    enemyBots.add(enemy1);
+    enemy1.shapeColor = color("red");
   }
 
-  
+
+
 }
 
 function draw() {
   //background for canvas
   background("black");
+
+
 }
 
 //end of code 
