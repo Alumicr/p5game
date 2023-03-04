@@ -1,6 +1,5 @@
 // Start of Code
 
-
 function setup() {
   // creats canvas and main player
   cnv = new Canvas(windowWidth, windowHeight);
@@ -9,6 +8,8 @@ function setup() {
   player.vel.x = 0;
   player.vel.y = 0;
   enemyBots = new Group();
+
+
   walls();
   enemy();
 
@@ -56,22 +57,20 @@ function walls() {
 function enemy() {
   // functiion creates the enemys 
   for (i = 0; i < 10; i++) {
-    enemy1 = new Sprite(100, 200, 50);
+    enemy1 = new Sprite(random(width), random(height), 20, 20, "d");
     enemy1.vel.y = 1;
     enemy1.vel.x = 1;
     enemyBots.add(enemy1);
     enemy1.shapeColor = color("red");
   }
-
-
-
 }
 
 function draw() {
   //background for canvas
   background("black");
 
-
+  //player items
+  player.rotation = atan2(mouseY - player.position.y, mouseX - player.position.x);
 }
 
 //end of code 
