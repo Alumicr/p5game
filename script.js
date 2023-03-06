@@ -2,6 +2,8 @@
 
 let player;
 let enemy1;
+let bullet;
+
 
 
 function setup() {
@@ -9,9 +11,8 @@ function setup() {
   cnv = new Canvas(windowWidth, windowHeight);
   player = new Sprite(width / 2, height / 2, 50, 50, "d");
   player.shapeColor = color("white");
-  player.vel.x = 0;
-  player.vel.y = 0;
   enemyBots = new Group();
+  playerBullets = new Group();
 
   walls();
   enemy();
@@ -60,27 +61,37 @@ function walls() {
 function enemy() {
   //function creates enemiesvwith random postions and sets colour
   for (i = 0; i < 10; i++) {
-    enemy1 = new Sprite(random(width), random(height), 30, 30, "d");
+    enemy1 = new Sprite(random(width), random(height), 25, 25, "d");
     enemyBots.add(enemy1);
     enemy1.shapeColor = color("red");
   }
 }
+
+function mouseClicked() {
+  // players gun
+  bullet = new Sprite(player.pos.x, player.pos.y, 12);
+  bullet.shapeColor = color("white");
+  playerBullets.add(bullet);
+
+
+}
+
 
 function draw() {
   //background for canvas
   background("black");
 
   //player items
-  player.rotation = atan2(mouseY - player.position.y, mouseX - player.position.x);
+  player.rotation = atan2(mouseY - player.pos.y, mouseX - player.pos.x);
 
   //enemy items
   for (let i = 0; i < enemyBots.length; i++) {
     let enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.5);
+
   }
 }
-
 
 
 //end of code 
