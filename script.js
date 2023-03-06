@@ -62,8 +62,6 @@ function enemy() {
   for (i = 0; i < 10; i++) {
     enemy1 = new Sprite(random(width), random(height), 30, 30, "d");
     enemyBots.add(enemy1);
-    enemy1.vel.x = 1;
-    enemy1.vel.y = 1;
     enemy1.shapeColor = color("red");
   }
 }
@@ -79,10 +77,8 @@ function draw() {
   for (let i = 0; i < enemyBots.length; i++) {
     let enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
-    enemy1.vel = direction.limit(1)
-
+    enemy1.vel = direction.limit(1.5);
   }
-
 }
 
 
