@@ -1,14 +1,17 @@
 // Start of Code
 
+let player;
+let enemy1;
+
+
 function setup() {
   // creats canvas and main player
   cnv = new Canvas(windowWidth, windowHeight);
-  player = new Sprite(300, 200, 50, 50, "d");
+  player = new Sprite(width / 2, height / 2, 50, 50, "d");
   player.shapeColor = color("white");
   player.vel.x = 0;
   player.vel.y = 0;
   enemyBots = new Group();
-
 
   walls();
   enemy();
@@ -55,12 +58,12 @@ function walls() {
 
 
 function enemy() {
-  // functiion creates the enemys 
+  //function creates enemiesvwith random postions and sets colour
   for (i = 0; i < 10; i++) {
-    enemy1 = new Sprite(random(width), random(height), 20, 20, "d");
-    enemy1.vel.y = 1;
-    enemy1.vel.x = 1;
+    enemy1 = new Sprite(random(width), random(height), 30, 30, "d");
     enemyBots.add(enemy1);
+    enemy1.vel.x = 1;
+    enemy1.vel.y = 1;
     enemy1.shapeColor = color("red");
   }
 }
@@ -71,6 +74,17 @@ function draw() {
 
   //player items
   player.rotation = atan2(mouseY - player.position.y, mouseX - player.position.x);
+
+  //enemy items
+  for (let i = 0; i < enemyBots.length; i++) {
+    let enemy1 = enemyBots[i];
+    let direction = p5.Vector.sub(player.pos, enemy1.pos);
+    enemy1.vel = direction.limit(1)
+
+  }
+
 }
+
+
 
 //end of code 
