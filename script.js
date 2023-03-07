@@ -68,12 +68,16 @@ function enemy() {
 }
 
 function mouseClicked() {
-  // players gun
-  bullet = new Sprite(player.pos.x, player.pos.y, 12);
+  // players gun when clicked
+  // Calculates DY and DX 
+  // Creates bullet and makes sets colour and adds to group
+  dx = mouseX - player.pos.x;
+  dy = mouseY - player.pos.y;
+  bulletSpeed = createVector(dx, dy).setMag(6.5);
+  bullet = new Sprite(player.pos.x, player.pos.y, 13);
+  bullet.vel = bulletSpeed;
   bullet.shapeColor = color("white");
   playerBullets.add(bullet);
-
-
 }
 
 
@@ -86,7 +90,7 @@ function draw() {
 
   //enemy items
   for (let i = 0; i < enemyBots.length; i++) {
-    let enemy1 = enemyBots[i];
+    enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.5);
 
