@@ -13,6 +13,7 @@ function setup() {
   player.shapeColor = color("white");
   enemyBots = new Group();
   playerBullets = new Group();
+  wallGroup = new Group();
 
   walls();
   enemy();
@@ -55,6 +56,10 @@ function walls() {
   wallTop.shapeColor = color('white');
   wallBot = new Sprite(width, height + 8, width * 2, 8, 'k');
   wallBot.shapeColor = color('white');
+  wallGroup.add(wallRH);
+  wallGroup.add(wallLH);
+  wallGroup.add(wallTop);
+  wallGroup.add(wallBot);
 }
 
 
@@ -69,7 +74,7 @@ function enemy() {
 
 function mouseClicked() {
   // players gun when clicked
-  // Calculates DY and DX 
+  // Calculates values
   // Creates bullet and makes sets colour and adds to group
   dx = mouseX - player.pos.x;
   dy = mouseY - player.pos.y;
@@ -93,9 +98,15 @@ function draw() {
     enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.5);
-
+  }
+//bullet items
+  for (let i = 0; i < playerBullets.length; i++) {
+    bullets = playerBullets[i];
+    if (bullets.collide(wallGroup)) {
+      playerBullets.remove(bullets);
+      bullets.remove();
+    }
   }
 }
-
 
 //end of code 
