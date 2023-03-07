@@ -66,7 +66,7 @@ function walls() {
 function enemy() {
   //function creates enemiesvwith random postions and sets colour
   for (i = 0; i < 10; i++) {
-    enemy1 = new Sprite(random(width), random(height), 25, 25, "d");
+    enemy1 = new Sprite(random(width), random(height), 29, 29, "d");
     enemyBots.add(enemy1);
     enemy1.shapeColor = color("red");
   }
@@ -78,7 +78,7 @@ function mouseClicked() {
   // Creates bullet and makes sets colour and adds to group
   dx = mouseX - player.pos.x;
   dy = mouseY - player.pos.y;
-  bulletSpeed = createVector(dx, dy).setMag(6.5);
+  bulletSpeed = createVector(dx, dy).setMag(6);
   bullet = new Sprite(player.pos.x, player.pos.y, 13);
   bullet.vel = bulletSpeed;
   bullet.shapeColor = color("white");
