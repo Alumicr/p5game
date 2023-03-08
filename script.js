@@ -44,8 +44,8 @@ function setup() {
       player.vel.x = 0;
     }
   })
-
-  setInterval(enemy, 7000);
+// spawns enemys every 7 secconds
+  setInterval(enemy, 7000)
 }
 
 function walls() {
@@ -95,15 +95,20 @@ function draw() {
   //player items
   player.rotation = atan2(mouseY - player.pos.y, mouseX - player.pos.x);
 
+  //player health, removes 1 health if touches 
    player.collide(enemyBots, function(player, enemy) {
     enemy.remove();
     playerHealth -= 1;
-     console.log(playerHealth)
+     console.log(playerHealth);
   });
 
+  // checks player health and stops game if player has 0 health
+   if (playerHealth <= 0) {
+    text("You have died! Your score was: " + score, 500, 500);
+    noLoop();
+   }
   
   //enemy items
-
   for (let i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
@@ -118,6 +123,8 @@ function draw() {
       bullets.remove();
     }
   }
+  //checks if players bullets are hitting enemys
+  //controls score
   playerBullets.collide(enemyBots, function(bullet, enemy) {
     bullet.remove();
     enemy.remove();
@@ -125,11 +132,11 @@ function draw() {
     console.log("enemydead");
   });
 
-  //players score
+  //players score + health
   textSize(20);
   fill("white");
   text("Score: " + score, 10, 35);
-  text("Health: " +playerHealth, 10, 70)
+  text("Health: " +playerHealth, 10, 70);
 
 }
 
