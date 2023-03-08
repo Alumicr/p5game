@@ -5,6 +5,7 @@ let enemy1;
 let bullet;
 let score = 0;
 let playerHealth = 5;
+const playerRaduis = 150;
 
 function setup() {
   // creats canvas and main player
@@ -44,7 +45,7 @@ function setup() {
       player.vel.x = 0;
     }
   })
-// spawns enemys every 7 secconds
+  // spawns enemys every 7 secconds
   setInterval(enemy, 7000)
 }
 
@@ -96,27 +97,27 @@ function draw() {
   player.rotation = atan2(mouseY - player.pos.y, mouseX - player.pos.x);
 
   //player health, removes 1 health if touches 
-   player.collide(enemyBots, function(player, enemy) {
+  player.collide(enemyBots, function(player, enemy) {
     enemy.remove();
     playerHealth -= 1;
-     console.log(playerHealth);
+    console.log(playerHealth);
   });
 
   // checks player health and stops game if player has 0 health
-   if (playerHealth <= 0) {
+  if (playerHealth <= 0) {
     text("You have died! Your score was: " + score, 500, 500);
     noLoop();
-   }
-  
+  }
+
   //enemy items
-  for (let i = 0; i < enemyBots.length; i++) {
+  for (i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.5);
   }
 
   //bullet items
-  for (let i = 0; i < playerBullets.length; i++) {
+  for (i = 0; i < playerBullets.length; i++) {
     bullets = playerBullets[i];
     if (bullets.collide(wallGroup)) {
       playerBullets.remove(bullets);
@@ -136,7 +137,7 @@ function draw() {
   textSize(20);
   fill("white");
   text("Score: " + score, 10, 35);
-  text("Health: " +playerHealth, 10, 70);
+  text("Health: " + playerHealth, 10, 70);
 
 }
 
