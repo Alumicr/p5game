@@ -4,7 +4,7 @@ let player;
 let enemy1;
 let bullet;
 let score = 0;
-let playerHealth = 3;
+let playerHealth = 5;
 
 function setup() {
   // creats canvas and main player
