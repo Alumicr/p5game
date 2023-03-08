@@ -3,8 +3,7 @@
 let player;
 let enemy1;
 let bullet;
-
-
+let score = 0;
 
 function setup() {
   // creats canvas and main player
@@ -108,8 +107,14 @@ function draw() {
   playerBullets.collide(enemyBots, function(bullet, enemy) {
     bullet.remove();
     enemy.remove();
+    score += 1
     console.log("enemydead");
   });
+
+  //players score
+  textSize(20);
+  fill("white");
+  text("Score: " + score, 10, 35);
 }
 
 //end of code 
