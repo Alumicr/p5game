@@ -8,7 +8,7 @@ let bullet;
 
 function setup() {
   // creats canvas and main player
-  cnv = new Canvas(windowWidth, windowHeight);
+  cnv = new Canvas(windowWidth, windowHeight - 40);
   player = new Sprite(width / 2, height / 2, 50, 50, "d");
   player.shapeColor = color("white");
   enemyBots = new Group();
