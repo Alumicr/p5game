@@ -52,9 +52,9 @@ function walls() {
   wallRH.shapeColor = color('white');
   wallLH = new Sprite(0, height / 2, 8, height, 'k');
   wallLH.shapeColor = color('white');
-  wallTop = new Sprite(0, 8, width * 2, 8, 'k');
+  wallTop = new Sprite(width / 2, 4, width, 8, 'k');
   wallTop.shapeColor = color('white');
-  wallBot = new Sprite(width, height + 8, width * 2, 8, 'k');
+  wallBot = new Sprite(width/2, height + 4, width * 2, 8, 'k');
   wallBot.shapeColor = color('white');
   wallGroup.add(wallRH);
   wallGroup.add(wallLH);
@@ -89,10 +89,8 @@ function mouseClicked() {
 function draw() {
   //background for canvas
   background("black");
-
   //player items
   player.rotation = atan2(mouseY - player.pos.y, mouseX - player.pos.x);
-
   //enemy items
   for (let i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
