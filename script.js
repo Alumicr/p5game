@@ -8,7 +8,7 @@ let bullet;
 
 function setup() {
   // creats canvas and main player
-  cnv = new Canvas(windowWidth, windowHeight - 40);
+  cnv = new Canvas(windowWidth, windowHeight - 10);
   player = new Sprite(width / 2, height / 2, 50, 50, "d");
   player.shapeColor = color("white");
   enemyBots = new Group();
@@ -54,7 +54,7 @@ function walls() {
   wallLH.shapeColor = color('white');
   wallTop = new Sprite(width / 2, 4, width, 8, 'k');
   wallTop.shapeColor = color('white');
-  wallBot = new Sprite(width/2, height + 4, width * 2, 8, 'k');
+  wallBot = new Sprite(width / 2, height + 4, width * 2, 8, 'k');
   wallBot.shapeColor = color('white');
   wallGroup.add(wallRH);
   wallGroup.add(wallLH);
@@ -78,7 +78,7 @@ function mouseClicked() {
   // Creates bullet and makes sets colour and adds to group
   dx = mouseX - player.pos.x;
   dy = mouseY - player.pos.y;
-  bulletSpeed = createVector(dx, dy).setMag(6);
+  bulletSpeed = createVector(dx, dy).setMag(7);
   bullet = new Sprite(player.pos.x, player.pos.y, 13);
   bullet.vel = bulletSpeed;
   bullet.shapeColor = color("white");
@@ -97,7 +97,7 @@ function draw() {
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.5);
   }
-//bullet items
+  //bullet items
   for (let i = 0; i < playerBullets.length; i++) {
     bullets = playerBullets[i];
     if (bullets.collide(wallGroup)) {
@@ -105,6 +105,11 @@ function draw() {
       bullets.remove();
     }
   }
+  playerBullets.collide(enemyBots, function(bullet, enemy) {
+    bullet.remove();
+    enemy.remove();
+    console.log("enemydead");
+  });
 }
 
 //end of code 
