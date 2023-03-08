@@ -4,6 +4,7 @@ let player;
 let enemy1;
 let bullet;
 let score = 0;
+let playerHealth = 3;
 
 function setup() {
   // creats canvas and main player
@@ -93,6 +94,14 @@ function draw() {
 
   //player items
   player.rotation = atan2(mouseY - player.pos.y, mouseX - player.pos.x);
+
+   player.collide(enemyBots, function(player, enemy) {
+    enemy.remove();
+    playerHealth -= 1;
+     console.log(playerHealth)
+  });
+
+  
   //enemy items
 
   for (let i = 0; i < enemyBots.length; i++) {
@@ -120,6 +129,8 @@ function draw() {
   textSize(20);
   fill("white");
   text("Score: " + score, 10, 35);
+  text("Health: " +playerHealth, 10, 70)
+
 }
 
 //end of code 
