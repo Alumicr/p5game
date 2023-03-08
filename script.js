@@ -43,6 +43,8 @@ function setup() {
       player.vel.x = 0;
     }
   })
+
+  setInterval(enemy, 7000);
 }
 
 function walls() {
@@ -88,14 +90,17 @@ function mouseClicked() {
 function draw() {
   //background for canvas
   background("black");
+
   //player items
   player.rotation = atan2(mouseY - player.pos.y, mouseX - player.pos.x);
   //enemy items
+
   for (let i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.5);
   }
+
   //bullet items
   for (let i = 0; i < playerBullets.length; i++) {
     bullets = playerBullets[i];
@@ -107,7 +112,7 @@ function draw() {
   playerBullets.collide(enemyBots, function(bullet, enemy) {
     bullet.remove();
     enemy.remove();
-    score += 1
+    score += 1;
     console.log("enemydead");
   });
 
