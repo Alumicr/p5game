@@ -96,6 +96,7 @@ function enemyTwo() {
   if (gameOver == false) {
     //spawns enemy with random location and sets colour
     for (i = 0; i < 4; i++) {
+      enemy2.health = enemy2Health;
       enemy2 = new Sprite(random(width), random(height), 50, "d");
       enemy2.shapeColor = color("red");
       console.log("Strong enemy spawned");
@@ -184,7 +185,6 @@ function draw() {
     }
   }
 
-
   //enemy death
   //controls score
   playerBullets.collide(enemyBots, function(bullet, enemy) {
@@ -197,8 +197,8 @@ function draw() {
   //enemy 2 score and enemy death
   playerBullets.collide(strongEnemy, function(bullet, enemy) {
     bullet.remove();
-    enemy2Health -= 1;
-    if (enemy2Health <= 0) {
+    enemy2.health -= 1;
+    if (enemy2.health <= 0) {
       enemy.remove();
       score += 2;
       console.log("strong enemy dead");
@@ -217,8 +217,6 @@ function draw() {
   textSize(20);
   fill('red');
   text(damageText, 10, 105);
-
-
 
   //removes damage notfication every 9 milliseconds 
   if (damageText) {
