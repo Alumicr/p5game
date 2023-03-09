@@ -4,11 +4,12 @@ let player;
 let enemy1;
 let bullet;
 let score = 0;
+let bulletSpawnDistance = 50;
 let playerHealth = 100;
 let damageText;
 
 function setup() {
-  // creats canvas and main player
+  //creats canvas and main player
   cnv = new Canvas(windowWidth, windowHeight - 10);
   player = new Sprite(width / 2, height / 2, 50, 50, "d");
   player.shapeColor = color("white");
@@ -19,7 +20,7 @@ function setup() {
   walls();
   enemy();
 
-  // player movement when key is pressed
+  //player movement when key is pressed
   document.addEventListener("keydown", function(event) {
     if (event.code == 'ArrowUp' || event.code == "KeyW") {
       player.vel.y = -5;
@@ -35,7 +36,7 @@ function setup() {
     }
   })
 
-  // player movement reset when key is relased 
+  //player movement reset when key is relased 
   document.addEventListener("keyup", function(event) {
 
     if (event.code == "ArrowUp" || event.code == "ArrowDown" || event.code == "KeyW" || event.code == "KeyS") {
@@ -45,14 +46,14 @@ function setup() {
       player.vel.x = 0;
     }
   })
-  // spawns enemys every 7 secconds
-  setInterval(enemy, 7000);
+  //spawns enemys every 7 secconds
+  setInterval(enemy, 5500);
 
 }
 
 
 function walls() {
-  // function makes walls and sets the colours
+  //function makes walls and sets the colours + adds to group
   wallRH = new Sprite(width, height / 2, 8, height, 'k');
   wallRH.shapeColor = color('white');
   wallLH = new Sprite(0, height / 2, 8, height, 'k');
@@ -79,13 +80,16 @@ function enemy() {
 }
 
 function mouseClicked() {
-  // players gun when clicked
-  // Calculates values
-  // Creates bullet and makes sets colour and adds to group
+  //players gun when clicked
+  //Calculates values (making sure it spawns a certain distance from the player)
   dx = mouseX - player.pos.x;
   dy = mouseY - player.pos.y;
+  angle = atan2(dy, dx);
+  bulletX = player.pos.x + cos(angle) * bulletSpawnDistance;
+  bulletY = player.pos.y + sin(angle) * bulletSpawnDistance;
   bulletSpeed = createVector(dx, dy).setMag(7);
-  bullet = new Sprite(player.pos.x, player.pos.y, 13);
+  //Creates bullet (using values above) and makes sets colour + speed + adds to group
+  bullet = new Sprite(bulletX, bulletY, 13);
   bullet.vel = bulletSpeed;
   bullet.shapeColor = color("white");
   playerBullets.add(bullet);
@@ -142,21 +146,22 @@ function draw() {
     console.log("enemydead");
   });
 
-  //players score + health + damage
+  //players score
   textSize(20);
   fill("white");
   text("Score: " + score, 10, 35);
+  //players health
   text("Health: " + playerHealth, 10, 70);
-
+  //damage notification
   textSize(20);
   fill('red');
   text(damageText, 10, 105);
 
-
+  //removes damage notfication every 9 milliseconds 
   if (damageText) {
     setTimeout(function() {
       damageText = '';
-    }, 500);
+    }, 900);
   }
 
 }
