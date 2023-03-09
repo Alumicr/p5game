@@ -1,10 +1,12 @@
 // Start of Code
+// Declare variables
 var gameOver = false
 var enemy1Damage = 25;
 var enemy2Damage = 50;
 let player;
 let enemy1;
 let enemy2;
+let enemy2Health = 3;
 let bullet;
 let score = 0;
 let bulletSpawnDistance = 40;
@@ -51,9 +53,9 @@ function setup() {
     }
   })
 
-  //spawns enemys every 5.5 secconds and enemy two every 3 secconds
-  setInterval(enemy, 5500)
-  setInterval(enemyTwo, 3000)
+  //spawns enemys every 5.5 secconds and enemy two seconds after secconds
+  setInterval(enemy, 5500);
+  setInterval(enemyTwo, 7500);
 }
 
 
@@ -93,7 +95,7 @@ function enemyTwo() {
   //runs if var is false
   if (gameOver == false) {
     //spawns enemy with random location and sets colour
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < 4; i++) {
       enemy2 = new Sprite(random(width), random(height), 50, "d");
       enemy2.shapeColor = color("red");
       console.log("Strong enemy spawned");
@@ -119,7 +121,6 @@ function mouseClicked() {
   bullet.shapeColor = color("white");
   playerBullets.add(bullet);
 }
-
 
 function draw() {
   //background for canvas
@@ -147,10 +148,7 @@ function draw() {
 
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
-    //makes player health 0 if it goes below
-    if (playerHealth < 0) {
-      playerHealth = 0;
-    }
+    playerHealth = 0;
     gameOver = true;
     enemyBots.remove();
     strongEnemy.remove();
@@ -187,7 +185,7 @@ function draw() {
   }
 
 
-  //checks if players bullets are hitting enemys
+  //enemy death
   //controls score
   playerBullets.collide(enemyBots, function(bullet, enemy) {
     bullet.remove();
@@ -195,12 +193,16 @@ function draw() {
     score += 1;
     console.log("enemydead");
   });
-  //enemy 2 score
+
+  //enemy 2 score and enemy death
   playerBullets.collide(strongEnemy, function(bullet, enemy) {
     bullet.remove();
-    enemy.remove();
-    score += 2;
-    console.log("strong enemy dead");
+    enemy2Health -= 1;
+    if (enemy2Health <= 0) {
+      enemy.remove();
+      score += 2;
+      console.log("strong enemy dead");
+    }
   });
 
   //players score
@@ -215,6 +217,8 @@ function draw() {
   textSize(20);
   fill('red');
   text(damageText, 10, 105);
+
+
 
   //removes damage notfication every 9 milliseconds 
   if (damageText) {
