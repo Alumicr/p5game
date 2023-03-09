@@ -47,7 +47,9 @@ function setup() {
   })
   // spawns enemys every 7 secconds
   setInterval(enemy, 7000);
+
 }
+
 
 function walls() {
   // function makes walls and sets the colours
@@ -101,7 +103,7 @@ function draw() {
   player.collide(enemyBots, function(player, enemy) {
     enemy.remove();
     playerHealth -= 25;
-    damageText = 'You have taken 25 damage!';
+    damageText = 'An enemy has hit you! \nYou have taken 25 damage!';
     console.log(playerHealth);
   });
 
@@ -140,7 +142,7 @@ function draw() {
     console.log("enemydead");
   });
 
-  //players score + health
+  //players score + health + damage
   textSize(20);
   fill("white");
   text("Score: " + score, 10, 35);
@@ -149,6 +151,16 @@ function draw() {
   textSize(20);
   fill('red');
   text(damageText, 10, 105);
+
+
+  if (damageText) {
+    setTimeout(function() {
+      damageText = '';
+    }, 500);
+  }
+
 }
+
+
 
 //end of code 
