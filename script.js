@@ -96,11 +96,11 @@ function enemyTwo() {
   if (gameOver == false) {
     //spawns enemy with random location and sets colour
     for (i = 0; i < 4; i++) {
-      enemy2.health = enemy2Health;
-      enemy2 = new Sprite(random(width), random(height), 50, "d");
+      enemy2 = new Sprite(random(width), random(height), 60, "d");
       enemy2.shapeColor = color("red");
       console.log("Strong enemy spawned");
       strongEnemy.add(enemy2);
+      enemy2.health = enemy2Health;
 
     }
   }
