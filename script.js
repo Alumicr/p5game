@@ -23,7 +23,6 @@ function setup() {
 
   walls();
   enemy();
-  enemyTwo();
 
   //player movement when key is pressed
   document.addEventListener("keydown", function(event) {
@@ -52,9 +51,9 @@ function setup() {
     }
   })
 
-  //spawns enemys every 5.5 secconds
+  //spawns enemys every 5.5 secconds and enemy two every 3 secconds
   setInterval(enemy, 5500)
-  setInterval(enemyTwo, 10000)
+  setInterval(enemyTwo, 3000)
 }
 
 
@@ -148,8 +147,13 @@ function draw() {
 
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
+    //makes player health 0 if it goes below
+    if (playerHealth < 0) {
+      playerHealth = 0;
+    }
     gameOver = true;
     enemyBots.remove();
+    strongEnemy.remove();
     playerBullets.remove();
     console.log("Game over!");
     textSize(30);
