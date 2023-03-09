@@ -1,10 +1,13 @@
 // Start of Code
-
+var gameOver = false
+var enemy1Damage = 25;
+var enemy2Damage = 50;
 let player;
 let enemy1;
+let enemy2;
 let bullet;
 let score = 0;
-let bulletSpawnDistance = 50;
+let bulletSpawnDistance = 40;
 let playerHealth = 100;
 let damageText;
 
@@ -16,9 +19,11 @@ function setup() {
   enemyBots = new Group();
   playerBullets = new Group();
   wallGroup = new Group();
+  strongEnemy = new Group();
 
   walls();
   enemy();
+  enemyTwo();
 
   //player movement when key is pressed
   document.addEventListener("keydown", function(event) {
@@ -46,10 +51,12 @@ function setup() {
       player.vel.x = 0;
     }
   })
-  //spawns enemys every 7 secconds
-  setInterval(enemy, 5500);
 
+  //spawns enemys every 5.5 secconds
+  setInterval(enemy, 5500)
+  setInterval(enemyTwo, 10000)
 }
+
 
 
 function walls() {
@@ -70,12 +77,30 @@ function walls() {
 
 
 function enemy() {
-  //function creates enemiesvwith random postions and sets colour
-  for (i = 0; i < 10; i++) {
-    enemy1 = new Sprite(random(width), random(height), 29, 29, "d");
-    enemyBots.add(enemy1);
-    enemy1.shapeColor = color("red");
-    console.log("enemy spawned");
+  // functions runs if var is false
+  if (gameOver == false) {
+    //function creates enemies vwith random postions and sets colour
+    for (i = 0; i < 10; i++) {
+      enemy1 = new Sprite(random(width), random(height), 29, 29, "d");
+      enemyBots.add(enemy1);
+      enemy1.shapeColor = color("red");
+      console.log("enemy spawned");
+    }
+  }
+}
+
+function enemyTwo() {
+  //function spawns stronger enemy
+  //runs if var is false
+  if (gameOver == false) {
+    //spawns enemy with random location and sets colour
+    for (i = 0; i < 3; i++) {
+      enemy2 = new Sprite(random(width), random(height), 50, "d");
+      enemy2.shapeColor = color("red");
+      console.log("Strong enemy spawned");
+      strongEnemy.add(enemy2);
+
+    }
   }
 }
 
@@ -87,7 +112,8 @@ function mouseClicked() {
   angle = atan2(dy, dx);
   bulletX = player.pos.x + cos(angle) * bulletSpawnDistance;
   bulletY = player.pos.y + sin(angle) * bulletSpawnDistance;
-  bulletSpeed = createVector(dx, dy).setMag(7);
+  bulletSpeed = createVector(dx, dy).setMag(8);
+
   //Creates bullet (using values above) and makes sets colour + speed + adds to group
   bullet = new Sprite(bulletX, bulletY, 13);
   bullet.vel = bulletSpeed;
@@ -103,30 +129,48 @@ function draw() {
   //player items
   player.rotation = atan2(mouseY - player.pos.y, mouseX - player.pos.x);
 
-  //player health, removes 1 health if touches 
+  //player health, removes damage health if touches 
   player.collide(enemyBots, function(player, enemy) {
     enemy.remove();
-    playerHealth -= 25;
-    damageText = 'An enemy has hit you! \nYou have taken 25 damage!';
+    playerHealth -= enemy1Damage;
+    damageText = 'An enemy has hit you!\nYou have taken ' + enemy1Damage + ' damage!';
     console.log(playerHealth);
   });
 
+  // player health for enemy 2
+  player.collide(strongEnemy, function(player, enemy) {
+    enemy.remove();
+    playerHealth -= enemy2Damage;
+    damageText = 'A strong enemy has hit you!\nYou have taken ' + enemy2Damage + ' damage!'
+    console.log(playerHealth);
+  });
+
+
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
+    gameOver = true;
     enemyBots.remove();
     playerBullets.remove();
     console.log("Game over!");
     textSize(30);
     fill("white");
-    text("You have died! \n Your score was: " + score + "!", 450, 450);
+    text("You have died! \nYour score was: " + score + "!", 200, 200);
     noLoop();
   }
 
   //enemy items
+  //enemy 1 control
   for (i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.5);
+  }
+  //enemy 2 control
+  for (i = 0; i < strongEnemy.length; i++) {
+    enemy2 = strongEnemy[i];
+    let direction = p5.Vector.sub(player.pos, enemy2.pos);
+    enemy2.vel = direction.limit(1);
+
   }
 
   //bullet items
@@ -137,6 +181,8 @@ function draw() {
       bullets.remove();
     }
   }
+
+
   //checks if players bullets are hitting enemys
   //controls score
   playerBullets.collide(enemyBots, function(bullet, enemy) {
@@ -145,13 +191,22 @@ function draw() {
     score += 1;
     console.log("enemydead");
   });
+  //enemy 2 score
+  playerBullets.collide(strongEnemy, function(bullet, enemy) {
+    bullet.remove();
+    enemy.remove();
+    score += 2;
+    console.log("strong enemy dead");
+  });
 
   //players score
   textSize(20);
   fill("white");
   text("Score: " + score, 10, 35);
+
   //players health
   text("Health: " + playerHealth, 10, 70);
+
   //damage notification
   textSize(20);
   fill('red');
@@ -161,11 +216,8 @@ function draw() {
   if (damageText) {
     setTimeout(function() {
       damageText = '';
-    }, 900);
+    }, 1000);
   }
-
 }
-
-
 
 //end of code 
