@@ -4,8 +4,8 @@ let player;
 let enemy1;
 let bullet;
 let score = 0;
-let playerHealth = 5;
-const playerRaduis = 150;
+let playerHealth = 100;
+let damageText;
 
 function setup() {
   // creats canvas and main player
@@ -46,7 +46,7 @@ function setup() {
     }
   })
   // spawns enemys every 7 secconds
-  setInterval(enemy, 7000)
+  setInterval(enemy, 7000);
 }
 
 function walls() {
@@ -72,6 +72,7 @@ function enemy() {
     enemy1 = new Sprite(random(width), random(height), 29, 29, "d");
     enemyBots.add(enemy1);
     enemy1.shapeColor = color("red");
+    console.log("enemy spawned");
   }
 }
 
@@ -99,13 +100,19 @@ function draw() {
   //player health, removes 1 health if touches 
   player.collide(enemyBots, function(player, enemy) {
     enemy.remove();
-    playerHealth -= 1;
+    playerHealth -= 25;
+    damageText = 'You have taken 25 damage!';
     console.log(playerHealth);
   });
 
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
-    text("You have died! Your score was: " + score, 500, 500);
+    enemyBots.remove();
+    playerBullets.remove();
+    console.log("Game over!");
+    textSize(30);
+    fill("white");
+    text("You have died! \n Your score was: " + score + "!", 450, 450);
     noLoop();
   }
 
@@ -139,6 +146,9 @@ function draw() {
   text("Score: " + score, 10, 35);
   text("Health: " + playerHealth, 10, 70);
 
+  textSize(20);
+  fill('red');
+  text(damageText, 10, 105);
 }
 
 //end of code 
