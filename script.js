@@ -3,6 +3,7 @@
 var gameOver = false
 let enemy1Damage = 25;
 let enemy2Damage = 50;
+let enemy3Damage = 10;
 let playerSafeSpawningZone = 130;
 let player;
 let enemy1;
@@ -30,7 +31,7 @@ function setup() {
   speedEnemy = new Group();
 
   walls();
-  enemy();
+  enemyThree();
 
   //player movement when key is pressed
   document.addEventListener("keydown", function(event) {
@@ -59,10 +60,10 @@ function setup() {
     }
   })
 
-  //spawns enemys every 6 secconds and enemy two seconds after secconds
-  setInterval(enemy, 6000);
+//spawn intervals for enemys
+  setInterval(enemy, 5000);
   setInterval(enemyTwo, 8000);
-  setInterval(enemyThree, 10000);
+  setInterval(enemyThree, 12000);
 }
 
 function walls() {
@@ -196,7 +197,7 @@ function draw() {
     console.log(playerHealth);
   });
 
-  // player health for enemy 2
+  // player damage for enemy 2
   player.collide(strongEnemy, function(player, enemy) {
     enemy.remove();
     playerHealth -= enemy2Damage;
@@ -204,6 +205,12 @@ function draw() {
     console.log(playerHealth);
   });
 
+  // player damge for enemy 3
+  player.collide(speedEnemy, function(player, enemy){
+  enemy.remove();
+  playerHealth -= enemy3Damage
+  damageText = 'A speed enemy has hit you!\n You have taken ' + enemy3Damage + ' damage!' 
+  });
 
 
   // checks player health and stops game if player has 0 health
@@ -239,7 +246,7 @@ function draw() {
   for (i = 0; i < speedEnemy.length; i++) {
     enemy3 = speedEnemy[i];
     let direction = p5.Vector.sub(player.pos, enemy3.pos);
-    enemy3.vel = direction.limit(2);
+    enemy3.vel = direction.limit(3);
   }
 
   //bullet items
@@ -278,7 +285,7 @@ function draw() {
     }
   });
 
-
+//enemy 3 score and enemy death
 playerBullets.collide(speedEnemy, function(bullet, enemy){
   if(enemy.health <= bulletDamage){
   bullet.remove();
@@ -286,7 +293,6 @@ playerBullets.collide(speedEnemy, function(bullet, enemy){
     score +=1;
     console.log("Speed enemy dead");
   } else{
-
     bullet.remove();
     enemy.health -= bulletDamge;
   }    
