@@ -27,10 +27,10 @@ function setup() {
   playerBullets = new Group();
   wallGroup = new Group();
   strongEnemy = new Group();
+  speedEnemy = new Group();
 
   walls();
   enemy();
-  enemyThree();
 
   //player movement when key is pressed
   document.addEventListener("keydown", function(event) {
@@ -62,6 +62,7 @@ function setup() {
   //spawns enemys every 6 secconds and enemy two seconds after secconds
   setInterval(enemy, 6000);
   setInterval(enemyTwo, 8000);
+  setInterval(enemyThree, 10000);
 }
 
 function walls() {
@@ -91,6 +92,7 @@ function enemy() {
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y
       distance = sqrt(dx * dx + dy * dy);
+
       if (distance < playerSafeSpawningZone) {
         i--;
         continue;
@@ -149,13 +151,15 @@ function enemyThree() {
       }
       //creates speed enemies with random postions using values from above
       enemy3 = new Sprite(enemyX, enemyY, 30, 30, "d");
+
       enemy3.draw = function() {
         triangle(0, this.height / 2, this.width, 0, this.width, this.height);
       }
+
       enemy3.health = enemy3Health;
       enemy3.shapeColor = color("red");
       console.log("Speed enemy spawned");
-      enemyBots.add(enemy3);
+      speedEnemy.add(enemy3);
     }
   }
 }
@@ -200,6 +204,8 @@ function draw() {
     console.log(playerHealth);
   });
 
+
+
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
     playerHealth = 0;
@@ -227,6 +233,13 @@ function draw() {
     let direction = p5.Vector.sub(player.pos, enemy2.pos);
     enemy2.vel = direction.limit(0.9);
 
+  }
+
+  //enemy 3 control
+  for (i = 0; i < speedEnemy.length; i++) {
+    enemy3 = speedEnemy[i];
+    let direction = p5.Vector.sub(player.pos, enemy3.pos);
+    enemy3.vel = direction.limit(2);
   }
 
   //bullet items
@@ -264,6 +277,22 @@ function draw() {
       enemy.health -= bulletDamage;
     }
   });
+
+
+playerBullets.collide(speedEnemy, function(bullet, enemy){
+  if(enemy.health <= bulletDamage){
+  bullet.remove();
+    enemy.remove();
+    score +=1;
+    console.log("Speed enemy dead");
+  } else{
+
+    bullet.remove();
+    enemy.health -= bulletDamge;
+  }    
+  });
+
+
 
   // players score
   textSize(20);
