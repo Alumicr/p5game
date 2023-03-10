@@ -4,6 +4,7 @@ var gameOver = false
 let enemy1Damage = 25;
 let enemy2Damage = 50;
 let player;
+let highligher;
 let enemy1;
 let enemy2;
 let enemy2Health = 3;
@@ -22,6 +23,7 @@ function setup() {
   enemyBots = new Group();
   playerBullets = new Group();
   wallGroup = new Group();
+  enemySpawnHighlter = new Group();
   strongEnemy = new Group();
 
   walls();
@@ -55,7 +57,7 @@ function setup() {
   })
 
   //spawns enemys every 5.5 secconds and enemy two seconds after secconds
-  setInterval(enemy, 5500);
+  setInterval(enemy, 4500);
   setInterval(enemyTwo, 7500);
 }
 
@@ -81,18 +83,28 @@ function enemy() {
   if (gameOver == false) {
     //function creates enemies vwith random postions and sets colour
     for (i = 0; i < 10; i++) {
+      highligher = new Sprite(random(width), random(height), 29, 29, "d");
+      highligher.shapeColor = color("red");
+      enemySpawnHighlter.add(highligher);
+    }
+
+    setTimeout(function() {
+      enemySpawnHighlter.remove()
       enemy1 = new Sprite(random(width), random(height), 29, 29, "d");
       enemyBots.add(enemy1);
       enemy1.shapeColor = color("red");
       console.log("enemy spawned");
-    }
+
+    }, 1000);
   }
 }
+
+
 
 function enemyTwo() {
   //function spawns stronger enemy
   //runs if var is false
-  if (gameOver == false) {
+  if (gameOver != false) {
     //spawns enemy with random location and sets colour
     for (i = 0; i < 4; i++) {
       enemy2 = new Sprite(random(width), random(height), 60, "d");
@@ -100,7 +112,6 @@ function enemyTwo() {
       console.log("Strong enemy spawned");
       enemy2.health = enemy2Health;
       strongEnemy.add(enemy2);
-
     }
   }
 }
@@ -197,7 +208,7 @@ function draw() {
     if (enemy.health <= bulletDamage) {
       bullet.remove();
       enemy.remove();
-      score += 5;
+      score += 2;
       console.log("strong enemy dead");
     } else {
       bullet.remove();
@@ -205,25 +216,25 @@ function draw() {
     }
   });
 
-    // players score
-    textSize(20);
-    fill("white");
-    text("Score: " + score, 10, 35);
+  // players score
+  textSize(20);
+  fill("white");
+  text("Score: " + score, 10, 35);
 
-    //players health
-    text("Health: " + playerHealth, 10, 70);
+  //players health
+  text("Health: " + playerHealth, 10, 70);
 
-    //damage notification
-    textSize(20);
-    fill('red');
-    text(damageText, 10, 105);
+  //damage notification
+  textSize(20);
+  fill('red');
+  text(damageText, 10, 105);
 
-    //removes damage notfication every 0.9 secconds
-    if (damageText) {
-      setTimeout(function() {
-        damageText = '';
-      }, 900);
-    }
+  //removes damage notfication every 0.9 secconds
+  if (damageText) {
+    setTimeout(function() {
+      damageText = '';
+    }, 900);
   }
+}
 
 //end of code 
