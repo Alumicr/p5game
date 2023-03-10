@@ -1,5 +1,5 @@
 // Start of Code
-// Declare variables
+// Declare variables + set them
 var gameOver = false
 var enemy1Damage = 25;
 var enemy2Damage = 50;
@@ -7,6 +7,7 @@ let player;
 let enemy1;
 let enemy2;
 let enemy2Health = 3;
+let bulletDamage = 1;
 let bullet;
 let score = 0;
 let bulletSpawnDistance = 40;
@@ -54,11 +55,9 @@ function setup() {
   })
 
   //spawns enemys every 5.5 secconds and enemy two seconds after secconds
-  setInterval(enemy, 5500);
+  // setInterval(enemy, 5500);
   setInterval(enemyTwo, 7500);
 }
-
-
 
 function walls() {
   //function makes walls and sets the colours + adds to group
@@ -99,8 +98,8 @@ function enemyTwo() {
       enemy2 = new Sprite(random(width), random(height), 60, "d");
       enemy2.shapeColor = color("red");
       console.log("Strong enemy spawned");
-      strongEnemy.add(enemy2);
       enemy2.health = enemy2Health;
+      strongEnemy.add(enemy2);
 
     }
   }
@@ -145,7 +144,6 @@ function draw() {
     damageText = 'A strong enemy has hit you!\nYou have taken ' + enemy2Damage + ' damage!'
     console.log(playerHealth);
   });
-
 
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
@@ -197,7 +195,7 @@ function draw() {
   //enemy 2 score and enemy death
   playerBullets.collide(strongEnemy, function(bullet, enemy) {
     bullet.remove();
-    enemy2.health -= 1;
+    enemy2.health -= bulletDamage;
     if (enemy2.health <= 0) {
       enemy.remove();
       score += 2;
@@ -218,11 +216,11 @@ function draw() {
   fill('red');
   text(damageText, 10, 105);
 
-  //removes damage notfication every 9 milliseconds 
+  //removes damage notfication every 0.9 secconds
   if (damageText) {
     setTimeout(function() {
       damageText = '';
-    }, 1000);
+    }, 900);
   }
 }
 
