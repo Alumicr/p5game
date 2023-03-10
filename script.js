@@ -7,8 +7,10 @@ let playerSafeSpawningZone = 130;
 let player;
 let enemy1;
 let enemy2;
+let enemy3;
 let enemy1Health = 2;
 let enemy2Health = 3;
+let enemy3Health = 1;
 let bulletDamage = 1;
 let bullet;
 let score = 0;
@@ -28,6 +30,7 @@ function setup() {
 
   walls();
   enemy();
+  enemyThree();
 
   //player movement when key is pressed
   document.addEventListener("keydown", function(event) {
@@ -56,9 +59,9 @@ function setup() {
     }
   })
 
-  //spawns enemys every 5.5 secconds and enemy two seconds after secconds
-  setInterval(enemy, 5500);
-  setInterval(enemyTwo, 7500);
+  //spawns enemys every 6 secconds and enemy two seconds after secconds
+  setInterval(enemy, 6000);
+  setInterval(enemyTwo, 8000);
 }
 
 function walls() {
@@ -82,7 +85,7 @@ function enemy() {
   //functions runs if var is false
   if (gameOver == false) {
     //calculates spawn sure it is a certain distance from player
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 7; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
@@ -118,12 +121,41 @@ function enemyTwo() {
         i--;
         continue;
       }
-      //using values calculated above, makes random spawning locations
+      //using values calculated above, makes random spawning locations for strong enemy
       enemy2 = new Sprite(enemyX, enemyY, 60, "d");
       enemy2.shapeColor = color("red");
       console.log("Strong enemy spawned");
       enemy2.health = enemy2Health;
       strongEnemy.add(enemy2);
+    }
+  }
+}
+
+function enemyThree() {
+  // function spawns speed enemy
+  //runs if car is false
+  if (gameOver == false) {
+    // calculates values
+    for (i = 0; i < 5; i++) {
+      enemyX = random(width);
+      enemyY = random(height);
+      dx = enemyX - player.pos.x;
+      dy = enemyY - player.pos.y;
+      distance = sqrt(dx * dx + dy * dy);
+
+      if (distance < playerSafeSpawningZone) {
+        i--;
+        continue;
+      }
+      //creates speed enemies with random postions using values from above
+      enemy3 = new Sprite(enemyX, enemyY, 30, 30, "d");
+      enemy3.draw = function() {
+        triangle(0, this.height / 2, this.width, 0, this.width, this.height);
+      }
+      enemy3.health = enemy3Health;
+      enemy3.shapeColor = color("red");
+      console.log("Speed enemy spawned");
+      enemyBots.add(enemy3);
     }
   }
 }
@@ -187,13 +219,13 @@ function draw() {
   for (i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
-    enemy1.vel = direction.limit(1.5);
+    enemy1.vel = direction.limit(1.3);
   }
   //enemy 2 control
   for (i = 0; i < strongEnemy.length; i++) {
     enemy2 = strongEnemy[i];
     let direction = p5.Vector.sub(player.pos, enemy2.pos);
-    enemy2.vel = direction.limit(1);
+    enemy2.vel = direction.limit(0.9);
 
   }
 
@@ -225,7 +257,7 @@ function draw() {
     if (enemy.health <= bulletDamage) {
       bullet.remove();
       enemy.remove();
-      score += 5;
+      score += 3;
       console.log("strong enemy dead");
     } else {
       bullet.remove();
