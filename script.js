@@ -232,6 +232,7 @@ function draw() {
     gameOver = true;
     enemyBots.remove();
     strongEnemy.remove();
+    speedEnemy.remove();
     playerBullets.remove();
     console.log("Game over!");
     textSize(30);
