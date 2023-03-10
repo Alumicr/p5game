@@ -60,7 +60,7 @@ function setup() {
     }
   })
 
-//spawn intervals for enemys
+  //spawn intervals for enemys
   setInterval(enemy, 5000);
   setInterval(enemyTwo, 8000);
   setInterval(enemyThree, 12000);
@@ -165,6 +165,15 @@ function enemyThree() {
   }
 }
 
+//flashes player when damge is taken
+function playerDamage() {
+  player.shapeColor = color("red");
+  setTimeout(function() {
+    player.shapeColor = color("white");
+  }, 300);
+
+}
+
 function mouseClicked() {
   //players gun when clicked
   //Calculates values (making sure it spawns a certain distance from the player)
@@ -194,6 +203,7 @@ function draw() {
     enemy.remove();
     playerHealth -= enemy1Damage;
     damageText = 'An enemy has hit you!\nYou have taken ' + enemy1Damage + ' damage!';
+    playerDamage();
     console.log(playerHealth);
   });
 
@@ -202,14 +212,17 @@ function draw() {
     enemy.remove();
     playerHealth -= enemy2Damage;
     damageText = 'A strong enemy has hit you!\nYou have taken ' + enemy2Damage + ' damage!'
+    playerDamage();
     console.log(playerHealth);
   });
 
   // player damge for enemy 3
-  player.collide(speedEnemy, function(player, enemy){
-  enemy.remove();
-  playerHealth -= enemy3Damage
-  damageText = 'A speed enemy has hit you!\n You have taken ' + enemy3Damage + ' damage!' 
+  player.collide(speedEnemy, function(player, enemy) {
+    enemy.remove();
+    playerHealth -= enemy3Damage
+    damageText = 'A speed enemy has hit you!\n You have taken ' + enemy3Damage + ' damage!'
+    playerDamage();
+    console.log(playerHealth);
   });
 
 
@@ -285,17 +298,17 @@ function draw() {
     }
   });
 
-//enemy 3 score and enemy death
-playerBullets.collide(speedEnemy, function(bullet, enemy){
-  if(enemy.health <= bulletDamage){
-  bullet.remove();
-    enemy.remove();
-    score +=1;
-    console.log("Speed enemy dead");
-  } else{
-    bullet.remove();
-    enemy.health -= bulletDamge;
-  }    
+  //enemy 3 score and enemy death
+  playerBullets.collide(speedEnemy, function(bullet, enemy) {
+    if (enemy.health <= bulletDamage) {
+      bullet.remove();
+      enemy.remove();
+      score += 1;
+      console.log("Speed enemy dead");
+    } else {
+      bullet.remove();
+      enemy.health -= bulletDamge;
+    }
   });
 
 
