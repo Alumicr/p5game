@@ -4,7 +4,6 @@ var gameOver = false
 let enemy1Damage = 25;
 let enemy2Damage = 50;
 let player;
-let highligher;
 let enemy1;
 let enemy2;
 let enemy2Health = 3;
@@ -23,7 +22,6 @@ function setup() {
   enemyBots = new Group();
   playerBullets = new Group();
   wallGroup = new Group();
-  enemySpawnHighlter = new Group();
   strongEnemy = new Group();
 
   walls();
@@ -57,7 +55,7 @@ function setup() {
   })
 
   //spawns enemys every 5.5 secconds and enemy two seconds after secconds
-  setInterval(enemy, 4500);
+  setInterval(enemy, 5500);
   setInterval(enemyTwo, 7500);
 }
 
@@ -79,32 +77,32 @@ function walls() {
 
 
 function enemy() {
-  // functions runs if var is false
+  //functions runs if var is false
   if (gameOver == false) {
-    //function creates enemies vwith random postions and sets colour
+    //calculates spawn sure it is a certain distance from player
     for (i = 0; i < 10; i++) {
-      highligher = new Sprite(random(width), random(height), 29, 29, "d");
-      highligher.shapeColor = color("red");
-      enemySpawnHighlter.add(highligher);
-    }
-
-    setTimeout(function() {
-      enemySpawnHighlter.remove()
-      enemy1 = new Sprite(random(width), random(height), 29, 29, "d");
+      enemyX = random(width);
+      enemyY = random(height);
+      dx = enemyX - player.pos.x;
+      dy = enemyY - player.pos.y
+      distance = sqrt(dx * dx + dy * dy);
+      if (distance < 100) {
+        i--;
+        continue;
+      }
+      //creates enemies with random postions using values from above
+      enemy1 = new Sprite(enemyX, enemyY, 29, 29, "d");
       enemyBots.add(enemy1);
       enemy1.shapeColor = color("red");
       console.log("enemy spawned");
-
-    }, 1000);
+    }
   }
 }
-
-
 
 function enemyTwo() {
   //function spawns stronger enemy
   //runs if var is false
-  if (gameOver != false) {
+  if (gameOver == false) {
     //spawns enemy with random location and sets colour
     for (i = 0; i < 4; i++) {
       enemy2 = new Sprite(random(width), random(height), 60, "d");
@@ -112,6 +110,7 @@ function enemyTwo() {
       console.log("Strong enemy spawned");
       enemy2.health = enemy2Health;
       strongEnemy.add(enemy2);
+
     }
   }
 }
@@ -208,7 +207,7 @@ function draw() {
     if (enemy.health <= bulletDamage) {
       bullet.remove();
       enemy.remove();
-      score += 2;
+      score += 5;
       console.log("strong enemy dead");
     } else {
       bullet.remove();
