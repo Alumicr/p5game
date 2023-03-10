@@ -1,8 +1,8 @@
 // Start of Code
 // Declare variables + set them
 var gameOver = false
-var enemy1Damage = 25;
-var enemy2Damage = 50;
+let enemy1Damage = 25;
+let enemy2Damage = 50;
 let player;
 let enemy1;
 let enemy2;
@@ -204,7 +204,6 @@ function draw() {
       enemy.health -= bulletDamage;
     }
   });
-
 
     // players score
     textSize(20);
