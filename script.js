@@ -4,6 +4,7 @@ var gameOver = false
 let enemy1Damage = 25;
 let enemy2Damage = 50;
 let player;
+let playerSafeSpawningZone;
 let enemy1;
 let enemy2;
 let enemy2Health = 3;
@@ -86,7 +87,7 @@ function enemy() {
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y
       distance = sqrt(dx * dx + dy * dy);
-      if (distance < 100) {
+      if (distance < playerSafeSpawningZone) {
         i--;
         continue;
       }
@@ -103,9 +104,20 @@ function enemyTwo() {
   //function spawns stronger enemy
   //runs if var is false
   if (gameOver == false) {
-    //spawns enemy with random location and sets colour
+  //calculates values
     for (i = 0; i < 4; i++) {
-      enemy2 = new Sprite(random(width), random(height), 60, "d");
+      enemyX = random(width);
+      enemyY = random(height);
+      dx = enemyX - player.pos.x;
+      dy = enemyY - player.pos.y
+      distance = sqrt(dx * dx + dy * dy);
+
+      if (distance < playerSafeSpawningZone) {
+        i--;
+        continue;
+      }
+      //using values calculated above, makes random spawning locations
+      enemy2 = new Sprite(enemyX, enemyY, 60, "d");
       enemy2.shapeColor = color("red");
       console.log("Strong enemy spawned");
       enemy2.health = enemy2Health;
