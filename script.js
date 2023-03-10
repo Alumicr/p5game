@@ -55,7 +55,7 @@ function setup() {
   })
 
   //spawns enemys every 5.5 secconds and enemy two seconds after secconds
-  // setInterval(enemy, 5500);
+  setInterval(enemy, 5500);
   setInterval(enemyTwo, 7500);
 }
 
@@ -194,34 +194,37 @@ function draw() {
 
   //enemy 2 score and enemy death
   playerBullets.collide(strongEnemy, function(bullet, enemy) {
-    bullet.remove();
-    enemy2.health -= bulletDamage;
-    if (enemy2.health <= 0) {
+    if (enemy.health <= bulletDamage) {
+      bullet.remove();
       enemy.remove();
-      score += 2;
+      score += 5;
       console.log("strong enemy dead");
+    } else {
+      bullet.remove();
+      enemy.health -= bulletDamage;
     }
   });
 
-  //players score
-  textSize(20);
-  fill("white");
-  text("Score: " + score, 10, 35);
 
-  //players health
-  text("Health: " + playerHealth, 10, 70);
+    // players score
+    textSize(20);
+    fill("white");
+    text("Score: " + score, 10, 35);
 
-  //damage notification
-  textSize(20);
-  fill('red');
-  text(damageText, 10, 105);
+    //players health
+    text("Health: " + playerHealth, 10, 70);
 
-  //removes damage notfication every 0.9 secconds
-  if (damageText) {
-    setTimeout(function() {
-      damageText = '';
-    }, 900);
+    //damage notification
+    textSize(20);
+    fill('red');
+    text(damageText, 10, 105);
+
+    //removes damage notfication every 0.9 secconds
+    if (damageText) {
+      setTimeout(function() {
+        damageText = '';
+      }, 900);
+    }
   }
-}
 
 //end of code 
