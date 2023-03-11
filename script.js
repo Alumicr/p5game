@@ -60,7 +60,7 @@ function setup() {
     }
   })
 
-  //spawn intervals for enemys
+  // spawn intervals for enemys
   setInterval(enemy, 5000);
   setInterval(enemyTwo, 8000);
   setInterval(enemyThree, 12000);
@@ -72,7 +72,7 @@ function walls() {
   wallRH.shapeColor = color('white');
   wallLH = new Sprite(0, height / 2, 8, height, 'k');
   wallLH.shapeColor = color('white');
-  wallTop = new Sprite(width / 2, 4, width, 8, 'k');
+  wallTop = new Sprite(width / 2, 3, width, 8, 'k');
   wallTop.shapeColor = color('white');
   wallBot = new Sprite(width / 2, height + 4, width * 2, 8, 'k');
   wallBot.shapeColor = color('white');
@@ -151,10 +151,10 @@ function enemyThree() {
         continue;
       }
       //creates speed enemies with random postions using values from above
-      enemy3 = new Sprite(enemyX, enemyY, 30, 30, "d");
+      enemy3 = new Sprite(enemyX, enemyY, 50, 50, "d");
 
       enemy3.draw = function() {
-        triangle(0, 22.5, 35, 0, 35, 35);
+        triangle(0, 30, 35, 0, 35, 35);
       }
 
       enemy3.health = enemy3Health;
@@ -253,16 +253,13 @@ function draw() {
     enemy2 = strongEnemy[i];
     let direction = p5.Vector.sub(player.pos, enemy2.pos);
     enemy2.vel = direction.limit(0.9);
-
   }
-
   //enemy 3 control
   for (i = 0; i < speedEnemy.length; i++) {
     enemy3 = speedEnemy[i];
     let direction = p5.Vector.sub(player.pos, enemy3.pos);
-    enemy3.vel = direction.limit(3);
+    enemy3.vel = direction.limit(2.9);
   }
-
   //bullet items
   for (i = 0; i < playerBullets.length; i++) {
     bullets = playerBullets[i];
@@ -271,7 +268,6 @@ function draw() {
       bullets.remove();
     }
   }
-
   //enemy death
   //controls score
   playerBullets.collide(enemyBots, function(bullet, enemy) {
@@ -305,14 +301,12 @@ function draw() {
       bullet.remove();
       enemy.remove();
       score += 1;
-      console.log("Speed enemy dead");
+      console.log("speed enemy dead");
     } else {
       bullet.remove();
-      enemy.health -= bulletDamge;
+      enemy.health -= bulletDamage;
     }
   });
-
-
 
   // players score
   textSize(20);
