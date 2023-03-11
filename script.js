@@ -1,22 +1,23 @@
 // Start of Code
 // Declare variables + set them
 var gameOver = false
-let enemy1Damage = 25;
-let enemy2Damage = 50;
-let enemy3Damage = 10;
-let playerSafeSpawningZone = 130;
 let player;
-let enemy1;
-let enemy2;
-let enemy3;
-let enemy1Health = 2;
-let enemy2Health = 3;
-let enemy3Health = 1;
-let bulletDamage = 1;
-let bullet;
-let score = 0;
-let bulletSpawnDistance = 40;
+let playerSafeSpawningZone = 130;
 let playerHealth = 100;
+let enemy1;
+let enemy1Damage = 25;
+let enemy1Health = 2;
+let enemy2;
+let enemy2Damage = 50;
+let enemy2Health = 3;
+let enemy3;
+let enemy3Damage = 10;
+let enemy3Health = 1;
+let bullet;
+let bulletDamage = 1;
+let bulletSpawnDistance = 40;
+let score = 0;
+let timer = 0;
 let damageText;
 
 function setup() {
@@ -64,6 +65,7 @@ function setup() {
   setInterval(enemy, 5000);
   setInterval(enemyTwo, 8000);
   setInterval(enemyThree, 12000);
+  setInterval(gameTimer, 1000);
 }
 
 function walls() {
@@ -72,7 +74,7 @@ function walls() {
   wallRH.shapeColor = color('white');
   wallLH = new Sprite(0, height / 2, 8, height, 'k');
   wallLH.shapeColor = color('white');
-  wallTop = new Sprite(width / 2, 3, width, 8, 'k');
+  wallTop = new Sprite(width / 2, 2, width, 8, 'k');
   wallTop.shapeColor = color('white');
   wallBot = new Sprite(width / 2, height + 4, width * 2, 8, 'k');
   wallBot.shapeColor = color('white');
@@ -82,18 +84,16 @@ function walls() {
   wallGroup.add(wallBot);
 }
 
-
 function enemy() {
   //functions runs if var is false
   if (gameOver == false) {
     //calculates spawn sure it is a certain distance from player
-    for (i = 0; i < 7; i++) {
+    for (i = 0; i < 6; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y
       distance = sqrt(dx * dx + dy * dy);
-
       if (distance < playerSafeSpawningZone) {
         i--;
         continue;
@@ -119,7 +119,6 @@ function enemyTwo() {
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y
       distance = sqrt(dx * dx + dy * dy);
-
       if (distance < playerSafeSpawningZone) {
         i--;
         continue;
@@ -145,18 +144,15 @@ function enemyThree() {
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y;
       distance = sqrt(dx * dx + dy * dy);
-
       if (distance < playerSafeSpawningZone) {
         i--;
         continue;
       }
-      //creates speed enemies with random postions using values from above
-      enemy3 = new Sprite(enemyX, enemyY, 50, 50, "d");
-
+      //creates speed enemies with random postions using values from above + hit boxes
+      enemy3 = new Sprite(enemyX, enemyY, 52, 52, "d");
       enemy3.draw = function() {
-        triangle(0, 30, 35, 0, 35, 35);
+        triangle(0, 30, 34, 0, 35, 35);
       }
-
       enemy3.health = enemy3Health;
       enemy3.shapeColor = color("red");
       console.log("Speed enemy spawned");
@@ -165,14 +161,20 @@ function enemyThree() {
   }
 }
 
-//flashes player when damge is taken
+function gameTimer(){
+  if (gameOver == false){
+  timer +=1;
+  }
+}
+
 function playerDamage() {
+  //flashes player when damge is taken
   player.shapeColor = color("red");
   setTimeout(function() {
     player.shapeColor = color("white");
   }, 300);
-
 }
+
 
 function mouseClicked() {
   //players gun when clicked
@@ -220,7 +222,7 @@ function draw() {
   player.collide(speedEnemy, function(player, enemy) {
     enemy.remove();
     playerHealth -= enemy3Damage
-    damageText = 'A speed enemy has hit you!\n You have taken ' + enemy3Damage + ' damage!'
+    damageText = 'A speed enemy has hit you!\nYou have taken ' + enemy3Damage + ' damage!'
     playerDamage();
     console.log(playerHealth);
   });
@@ -237,7 +239,7 @@ function draw() {
     console.log("Game over!");
     textSize(30);
     fill("white");
-    text("You have died! \nYour score was: " + score + "!", 200, 200);
+    text("You have died!\nYou survived for " + timer+" seconds\nYour score was: " + score + "!", 200, 200);
     noLoop();
   }
 
@@ -246,13 +248,13 @@ function draw() {
   for (i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
     let direction = p5.Vector.sub(player.pos, enemy1.pos);
-    enemy1.vel = direction.limit(1.3);
+    enemy1.vel = direction.limit(1.35);
   }
   //enemy 2 control
   for (i = 0; i < strongEnemy.length; i++) {
     enemy2 = strongEnemy[i];
     let direction = p5.Vector.sub(player.pos, enemy2.pos);
-    enemy2.vel = direction.limit(0.9);
+    enemy2.vel = direction.limit(1);
   }
   //enemy 3 control
   for (i = 0; i < speedEnemy.length; i++) {
@@ -321,11 +323,16 @@ function draw() {
   fill('red');
   text(damageText, 10, 105);
 
+  //display timer
+  textSize(50);
+  fill('white');
+  text(timer, width - 65, 60)
+
   //removes damage notfication every 0.9 secconds
   if (damageText) {
     setTimeout(function() {
       damageText = '';
-    }, 900);
+    }, 500);
   }
 }
 
