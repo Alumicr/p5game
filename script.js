@@ -154,7 +154,7 @@ function enemyThree() {
       enemy3 = new Sprite(enemyX, enemyY, 30, 30, "d");
 
       enemy3.draw = function() {
-        triangle(0, this.height / 2, this.width, 0, this.width, this.height);
+        triangle(0, 22.5, 35, 0, 35, 35);
       }
 
       enemy3.health = enemy3Health;
