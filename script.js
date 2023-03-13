@@ -238,7 +238,7 @@ function draw() {
     console.log("Game over!");
     textSize(30);
     fill("white");
-    text("You have died!\nYou survived for " + timer + " seconds\nYour score was: " + score + "!", 200, 200);
+    text("You have died!\nYou survived for " + timer + " seconds\nYour score was: " + score + "!", width / 2, 200);
     noLoop();
   }
 
