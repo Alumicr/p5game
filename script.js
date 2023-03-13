@@ -1,24 +1,26 @@
 // Start of Code
-// Declare variables + set them
+// Declare variables
 var gameOver = false
 var player;
-const PLAYERSAFESPAWNINGZONE = 140;
-let playerHealth = 100;
-var enemy1;
-const ENEMY1DAMAGE = 25;
-let enemy1Health = 2;
-var enemy2;
-const ENEMY2DAMAGE = 50;
-let enemy2Health = 3;
-var enemy3;
-const ENEMY3DAMAGE = 10;
-let enemy3Health = 1;
 var bullet;
+var enemy1;
+var enemy2;
+var enemy3;
+// lets
+let enemy1Health = 2;
+let playerHealth = 100;
+let enemy2Health = 3;
+let enemy3Health = 1;
 let bulletDamage = 1;
 let bulletSpawnDistance = 40;
 let score = 0;
 let timer = 0;
 let damageText;
+//consts
+const PLAYERSAFESPAWNINGZONE = 140;
+const ENEMY1DAMAGE = 25;
+const ENEMY2DAMAGE = 50;
+const ENEMY3DAMAGE = 10;
 
 function setup() {
   //creats canvas and main player
