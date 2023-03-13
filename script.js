@@ -1,19 +1,19 @@
 // Start of Code
 // Declare variables + set them
 var gameOver = false
-let player;
-let playerSafeSpawningZone = 130;
+var player;
+const PLAYERSAFESPAWNINGZONE = 140;
 let playerHealth = 100;
-let enemy1;
-let enemy1Damage = 25;
+var enemy1;
+const ENEMY1DAMAGE = 25;
 let enemy1Health = 2;
-let enemy2;
-let enemy2Damage = 50;
+var enemy2;
+const ENEMY2DAMAGE = 50;
 let enemy2Health = 3;
-let enemy3;
-let enemy3Damage = 10;
+var enemy3;
+const ENEMY3DAMAGE = 10;
 let enemy3Health = 1;
-let bullet;
+var bullet;
 let bulletDamage = 1;
 let bulletSpawnDistance = 40;
 let score = 0;
@@ -61,11 +61,11 @@ function setup() {
     }
   })
 
-  // spawn intervals for enemys
+  // spawn intervals for enemys and timer
+  setInterval(gameTimer, 1000);
   setInterval(enemy, 5000);
   setInterval(enemyTwo, 8000);
   setInterval(enemyThree, 12000);
-  setInterval(gameTimer, 1000);
 }
 
 function walls() {
@@ -74,7 +74,7 @@ function walls() {
   wallRH.shapeColor = color('white');
   wallLH = new Sprite(0, height / 2, 8, height, 'k');
   wallLH.shapeColor = color('white');
-  wallTop = new Sprite(width / 2, 2, width, 8, 'k');
+  wallTop = new Sprite(width / 2, 1, width, 8, 'k');
   wallTop.shapeColor = color('white');
   wallBot = new Sprite(width / 2, height + 4, width * 2, 8, 'k');
   wallBot.shapeColor = color('white');
@@ -94,7 +94,7 @@ function enemy() {
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y
       distance = sqrt(dx * dx + dy * dy);
-      if (distance < playerSafeSpawningZone) {
+      if (distance < PLAYERSAFESPAWNINGZONE) {
         i--;
         continue;
       }
@@ -119,7 +119,7 @@ function enemyTwo() {
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y
       distance = sqrt(dx * dx + dy * dy);
-      if (distance < playerSafeSpawningZone) {
+      if (distance < PLAYERSAFESPAWNINGZONE) {
         i--;
         continue;
       }
@@ -144,7 +144,7 @@ function enemyThree() {
       dx = enemyX - player.pos.x;
       dy = enemyY - player.pos.y;
       distance = sqrt(dx * dx + dy * dy);
-      if (distance < playerSafeSpawningZone) {
+      if (distance < PLAYERSAFESPAWNINGZONE) {
         i--;
         continue;
       }
@@ -161,9 +161,10 @@ function enemyThree() {
   }
 }
 
-function gameTimer(){
-  if (gameOver == false){
-  timer +=1;
+// function is for game timer
+function gameTimer() {
+  if (gameOver == false) {
+    timer += 1;
   }
 }
 
@@ -174,7 +175,6 @@ function playerDamage() {
     player.shapeColor = color("white");
   }, 300);
 }
-
 
 function mouseClicked() {
   //players gun when clicked
@@ -203,8 +203,8 @@ function draw() {
   //player health, removes damage health if touches 
   player.collide(enemyBots, function(player, enemy) {
     enemy.remove();
-    playerHealth -= enemy1Damage;
-    damageText = 'An enemy has hit you!\nYou have taken ' + enemy1Damage + ' damage!';
+    playerHealth -= ENEMY1DAMAGE;
+    damageText = 'An enemy has hit you!\nYou have taken ' + ENEMY1DAMAGE + ' damage!';
     playerDamage();
     console.log(playerHealth);
   });
@@ -212,8 +212,8 @@ function draw() {
   // player damage for enemy 2
   player.collide(strongEnemy, function(player, enemy) {
     enemy.remove();
-    playerHealth -= enemy2Damage;
-    damageText = 'A strong enemy has hit you!\nYou have taken ' + enemy2Damage + ' damage!'
+    playerHealth -= ENEMY2DAMAGE;
+    damageText = 'A strong enemy has hit you!\nYou have taken ' + ENEMY2DAMAGE + ' damage!'
     playerDamage();
     console.log(playerHealth);
   });
@@ -221,13 +221,12 @@ function draw() {
   // player damge for enemy 3
   player.collide(speedEnemy, function(player, enemy) {
     enemy.remove();
-    playerHealth -= enemy3Damage
-    damageText = 'A speed enemy has hit you!\nYou have taken ' + enemy3Damage + ' damage!'
+    playerHealth -= ENEMY3DAMAGE
+    damageText = 'A speed enemy has hit you!\nYou have taken ' + ENEMY3DAMAGE + ' damage!'
     playerDamage();
     console.log(playerHealth);
   });
-
-
+  
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
     playerHealth = 0;
@@ -239,7 +238,7 @@ function draw() {
     console.log("Game over!");
     textSize(30);
     fill("white");
-    text("You have died!\nYou survived for " + timer+" seconds\nYour score was: " + score + "!", 200, 200);
+    text("You have died!\nYou survived for " + timer + " seconds\nYour score was: " + score + "!", 200, 200);
     noLoop();
   }
 
@@ -311,7 +310,7 @@ function draw() {
   });
 
   // players score
-  textSize(20);
+  textSize(30);
   fill("white");
   text("Score: " + score, 10, 35);
 
@@ -319,7 +318,7 @@ function draw() {
   text("Health: " + playerHealth, 10, 70);
 
   //damage notification
-  textSize(20);
+  textSize(30);
   fill('red');
   text(damageText, 10, 105);
 
@@ -328,11 +327,11 @@ function draw() {
   fill('white');
   text(timer, width - 65, 60)
 
-  //removes damage notfication every 0.9 secconds
+  //removes damage notfication every 0.7 secconds
   if (damageText) {
     setTimeout(function() {
       damageText = '';
-    }, 500);
+    }, 700);
   }
 }
 
