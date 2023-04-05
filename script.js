@@ -28,9 +28,9 @@ const ENEMY3DAMAGE = 10;
 
 function setup() {
   //creats canvas and main player
-  cnv = new Canvas(windowWidth, windowHeight - 10);
+  cnv = new Canvas(windowWidth, windowHeight);
   player = new Sprite(width / 2, height / 2, 50, 50, "d");
-  player.shapeColor = color("white");
+  player.color = color("white");
   enemyBots = new Group();
   playerBullets = new Group();
   wallGroup = new Group();
@@ -77,13 +77,13 @@ function setup() {
 function walls() {
   // function makes walls and sets the colours + adds to group
   wallRH = new Sprite(width, height / 2, 8, height, 'k');
-  wallRH.shapeColor = color('white');
+  wallRH.color = color('white');
   wallLH = new Sprite(0, height / 2, 8, height, 'k');
-  wallLH.shapeColor = color('white');
+  wallLH.color = color('white');
   wallTop = new Sprite(width / 2, 0, width, 8, 'k');
-  wallTop.shapeColor = color('white');
+  wallTop.color = color('white');
   wallBot = new Sprite(width / 2, height + 4, width * 2, 8, 'k');
-  wallBot.shapeColor = color('white');
+  wallBot.color = color('white');
   wallGroup.add(wallRH);
   wallGroup.add(wallLH);
   wallGroup.add(wallTop);
@@ -106,7 +106,7 @@ function enemy() {
       }
       // creates enemies with random postions using values from above
       enemy1 = new Sprite(enemyX, enemyY, 29, 29, "d");
-      enemy1.shapeColor = color("red");
+      enemy1.color = color("red");
       console.log("enemy spawned");
       enemy1.health = enemy1Health;
       enemyBots.add(enemy1);
@@ -131,7 +131,7 @@ function enemyTwo() {
       }
       //using values calculated above, makes random spawning locations for strong enemy
       enemy2 = new Sprite(enemyX, enemyY, 60, "d");
-      enemy2.shapeColor = color("red");
+      enemy2.color = color("red");
       console.log("Strong enemy spawned");
       enemy2.health = enemy2Health;
       strongEnemy.add(enemy2);
@@ -160,7 +160,7 @@ function enemyThree() {
         triangle(0, 30, 34, 0, 35, 35);
       }
       enemy3.health = enemy3Health;
-      enemy3.shapeColor = color("red");
+      enemy3.color = color("red");
       console.log("Speed enemy spawned");
       speedEnemy.add(enemy3);
     }
@@ -176,9 +176,9 @@ function gameTimer() {
 
 function playerDamage() {
   //flashes player when damge is taken
-  player.shapeColor = color("red");
+  player.color = color("red");
   setTimeout(function() {
-    player.shapeColor = color("white");
+    player.color = color("white");
   }, 300);
 }
 
@@ -195,7 +195,7 @@ function mouseClicked() {
   //Creates bullet (using values above) and makes sets colour + speed + adds to group
   bullet = new Sprite(bulletX, bulletY, 13);
   bullet.vel = bulletSpeed;
-  bullet.shapeColor = color("white");
+  bullet.color = color("white");
   playerBullets.add(bullet);
 }
 
