@@ -1,14 +1,18 @@
 // Start of Code
-// Declare variables
-var gameOver = false
+// vars
+var gameOver = false;
 var player;
 var bullet;
 var enemy1;
+var enemy1Spawn = 6;
+var enemy2Spawn = 3;
+var enemy3Spawn = 5;
 var enemy2;
 var enemy3;
 // lets
-let enemy1Health = 2;
+let direction;
 let playerHealth = 100;
+let enemy1Health = 2;
 let enemy2Health = 3;
 let enemy3Health = 1;
 let bulletDamage = 1;
@@ -16,8 +20,8 @@ let bulletSpawnDistance = 40;
 let score = 0;
 let timer = 0;
 let damageText;
-//consts
-const PLAYERSAFESPAWNINGZONE = 140;
+// consts
+const PLAYERSAFESPAWNINGZONE = 130;
 const ENEMY1DAMAGE = 25;
 const ENEMY2DAMAGE = 50;
 const ENEMY3DAMAGE = 10;
@@ -36,7 +40,7 @@ function setup() {
   walls();
   enemyThree();
 
-  //player movement when key is pressed
+  // player movement when key is pressed
   document.addEventListener("keydown", function(event) {
     if (event.code == 'ArrowUp' || event.code == "KeyW") {
       player.vel.y = -5;
@@ -52,7 +56,7 @@ function setup() {
     }
   })
 
-  //player movement reset when key is relased 
+  // player movement reset when key is relased 
   document.addEventListener("keyup", function(event) {
 
     if (event.code == "ArrowUp" || event.code == "ArrowDown" || event.code == "KeyW" || event.code == "KeyS") {
@@ -71,12 +75,12 @@ function setup() {
 }
 
 function walls() {
-  //function makes walls and sets the colours + adds to group
+  // function makes walls and sets the colours + adds to group
   wallRH = new Sprite(width, height / 2, 8, height, 'k');
   wallRH.shapeColor = color('white');
   wallLH = new Sprite(0, height / 2, 8, height, 'k');
   wallLH.shapeColor = color('white');
-  wallTop = new Sprite(width / 2, 1, width, 8, 'k');
+  wallTop = new Sprite(width / 2, 0, width, 8, 'k');
   wallTop.shapeColor = color('white');
   wallBot = new Sprite(width / 2, height + 4, width * 2, 8, 'k');
   wallBot.shapeColor = color('white');
@@ -87,10 +91,10 @@ function walls() {
 }
 
 function enemy() {
-  //functions runs if var is false
+  // functions runs if var is false
   if (gameOver == false) {
-    //calculates spawn sure it is a certain distance from player
-    for (i = 0; i < 6; i++) {
+    // calculates spawn sure it is a certain distance from player
+    for (i = 0; i < enemy1Spawn; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
@@ -100,7 +104,7 @@ function enemy() {
         i--;
         continue;
       }
-      //creates enemies with random postions using values from above
+      // creates enemies with random postions using values from above
       enemy1 = new Sprite(enemyX, enemyY, 29, 29, "d");
       enemy1.shapeColor = color("red");
       console.log("enemy spawned");
@@ -115,7 +119,7 @@ function enemyTwo() {
   //runs if var is false
   if (gameOver == false) {
     //calculates values
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < enemy2Spawn; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
@@ -140,7 +144,7 @@ function enemyThree() {
   //runs if car is false
   if (gameOver == false) {
     // calculates values
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < enemy3Spawn; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
@@ -151,7 +155,7 @@ function enemyThree() {
         continue;
       }
       //creates speed enemies with random postions using values from above + hit boxes
-      enemy3 = new Sprite(enemyX, enemyY, 52, 52, "d");
+      enemy3 = new Sprite(enemyX, enemyY, 50, 50, "d");
       enemy3.draw = function() {
         triangle(0, 30, 34, 0, 35, 35);
       }
@@ -163,8 +167,8 @@ function enemyThree() {
   }
 }
 
-// function is for game timer
 function gameTimer() {
+  //function is for game timer
   if (gameOver == false) {
     timer += 1;
   }
@@ -228,7 +232,7 @@ function draw() {
     playerDamage();
     console.log(playerHealth);
   });
-  
+
   // checks player health and stops game if player has 0 health
   if (playerHealth <= 0) {
     playerHealth = 0;
@@ -240,7 +244,7 @@ function draw() {
     console.log("Game over!");
     textSize(30);
     fill("white");
-    text("You have died!\nYou survived for " + timer + " seconds\nYour score was: " + score + "!", width / 2, 200);
+    text("You have died!\nYou survived for " + timer + " seconds\nYour score was: " + score + "!", width / 3, 200);
     noLoop();
   }
 
@@ -248,19 +252,19 @@ function draw() {
   //enemy 1 control
   for (i = 0; i < enemyBots.length; i++) {
     enemy1 = enemyBots[i];
-    let direction = p5.Vector.sub(player.pos, enemy1.pos);
+    direction = p5.Vector.sub(player.pos, enemy1.pos);
     enemy1.vel = direction.limit(1.35);
   }
   //enemy 2 control
   for (i = 0; i < strongEnemy.length; i++) {
     enemy2 = strongEnemy[i];
-    let direction = p5.Vector.sub(player.pos, enemy2.pos);
+    direction = p5.Vector.sub(player.pos, enemy2.pos);
     enemy2.vel = direction.limit(1);
   }
   //enemy 3 control
   for (i = 0; i < speedEnemy.length; i++) {
     enemy3 = speedEnemy[i];
-    let direction = p5.Vector.sub(player.pos, enemy3.pos);
+    direction = p5.Vector.sub(player.pos, enemy3.pos);
     enemy3.vel = direction.limit(2.9);
   }
   //bullet items
@@ -320,7 +324,7 @@ function draw() {
   text("Health: " + playerHealth, 10, 70);
 
   //damage notification
-  textSize(30);
+  textSize(25);
   fill('red');
   text(damageText, 10, 105);
 
@@ -338,3 +342,4 @@ function draw() {
 }
 
 //end of code 
+
