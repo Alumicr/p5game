@@ -1,22 +1,28 @@
 // Start of Code
-// vars
+// vars 
 var gameOver = false;
 var player;
 var bullet;
+//enemy1 vars
 var enemy1;
-var enemy1Spawn = 6;
-var enemy2Spawn = 3;
-var enemy3Spawn = 5;
+var normalEnemyScoreValue = 2;
+var normalEnemySpawnCount = 6;
+//enemy2 vars
 var enemy2;
+var strongEnemySpawnCount = 3;
+var storngEnemyScoreValue = 3;
+//enemy3 vars
 var enemy3;
+var speedEnemySpawnCount = 5;
+var speedEnemyScoreValue = 1;
 // lets
-let direction;
 let playerHealth = 100;
 let enemy1Health = 2;
 let enemy2Health = 3;
 let enemy3Health = 1;
 let bulletDamage = 1;
 let bulletSpawnDistance = 40;
+let direction;
 let score = 0;
 let timer = 0;
 let damageText;
@@ -94,7 +100,8 @@ function enemy() {
   // functions runs if var is false
   if (gameOver == false) {
     // calculates spawn sure it is a certain distance from player
-    for (i = 0; i < enemy1Spawn; i++) {
+    // calculates values
+    for (i = 0; i < normalEnemySpawnCount; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
@@ -119,7 +126,7 @@ function enemyTwo() {
   //runs if var is false
   if (gameOver == false) {
     //calculates values
-    for (i = 0; i < enemy2Spawn; i++) {
+    for (i = 0; i < strongEnemySpawnCount; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
@@ -144,7 +151,7 @@ function enemyThree() {
   //runs if car is false
   if (gameOver == false) {
     // calculates values
-    for (i = 0; i < enemy3Spawn; i++) {
+    for (i = 0; i < speedEnemySpawnCount; i++) {
       enemyX = random(width);
       enemyY = random(height);
       dx = enemyX - player.pos.x;
@@ -175,6 +182,7 @@ function gameTimer() {
 }
 
 function playerDamage() {
+  console.log("player health is now " + playerHealth);
   //flashes player when damge is taken
   player.color = color("red");
   setTimeout(function() {
@@ -212,7 +220,6 @@ function draw() {
     playerHealth -= ENEMY1DAMAGE;
     damageText = 'An enemy has hit you!\nYou have taken ' + ENEMY1DAMAGE + ' damage!';
     playerDamage();
-    console.log(playerHealth);
   });
 
   // player damage for enemy 2
@@ -221,7 +228,6 @@ function draw() {
     playerHealth -= ENEMY2DAMAGE;
     damageText = 'A strong enemy has hit you!\nYou have taken ' + ENEMY2DAMAGE + ' damage!'
     playerDamage();
-    console.log(playerHealth);
   });
 
   // player damge for enemy 3
@@ -230,7 +236,6 @@ function draw() {
     playerHealth -= ENEMY3DAMAGE
     damageText = 'A speed enemy has hit you!\nYou have taken ' + ENEMY3DAMAGE + ' damage!'
     playerDamage();
-    console.log(playerHealth);
   });
 
   // checks player health and stops game if player has 0 health
@@ -277,11 +282,12 @@ function draw() {
   }
   //enemy death
   //controls score
+  // normal enemy 
   playerBullets.collide(enemyBots, function(bullet, enemy) {
     if (enemy.health <= bulletDamage) {
       bullet.remove();
       enemy.remove();
-      score += 2;
+      score += normalEnemyScoreValue;
       console.log("enemydead");
     } else {
       bullet.remove();
@@ -289,12 +295,12 @@ function draw() {
     }
   });
 
-  //enemy 2 score and enemy death
+  //strong enemy score and enemy death
   playerBullets.collide(strongEnemy, function(bullet, enemy) {
     if (enemy.health <= bulletDamage) {
       bullet.remove();
       enemy.remove();
-      score += 3;
+      score += storngEnemyScoreValue;
       console.log("strong enemy dead");
     } else {
       bullet.remove();
@@ -302,12 +308,12 @@ function draw() {
     }
   });
 
-  //enemy 3 score and enemy death
+  //speedenemy score and enemy death
   playerBullets.collide(speedEnemy, function(bullet, enemy) {
     if (enemy.health <= bulletDamage) {
       bullet.remove();
       enemy.remove();
-      score += 1;
+      score += speedEnemyScoreValue;
       console.log("speed enemy dead");
     } else {
       bullet.remove();
